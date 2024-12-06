@@ -161,7 +161,7 @@ link_t list_lookup(void* elem, list_t l, int(*compare)(void* e1, void* e2)) {
     link_t current_link;
     current_link = l->data;
     for (int i=0; i<l->size; i++) {
-        if(compare(current_link->data, elem)) {
+        if(compare(current_link->data, elem) == 0) {
             return current_link;
         }
         current_link = current_link->next;
@@ -172,7 +172,7 @@ link_t list_lookup(void* elem, list_t l, int(*compare)(void* e1, void* e2)) {
 link_t list_find(void* e, list_t l) {
     link_t current_link;
     current_link = l->data;    for (int i=0; i<l->size; i++) {
-        if(l->equal_data(current_link->data, e)) {
+        if(l->equal_data(current_link->data, e) == 0) {
             return current_link;
         }
         current_link = current_link->next;

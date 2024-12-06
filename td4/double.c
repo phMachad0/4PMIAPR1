@@ -11,7 +11,12 @@ void double_printf(void* val)  {
 
 // Test l'egalite de 2 reels
 int double_equal(void* pv1, void* pv2) {
-    return(*(double*)pv1 == *(double*)pv2);
+    if(*(double*)pv1 == *(double*)pv2)
+		return 0;
+	else if (*(double*)pv1 < *(double*)pv2)
+		return -1;
+	else
+		return 1;
 }
 
 // Génération d'un reel aléatoire

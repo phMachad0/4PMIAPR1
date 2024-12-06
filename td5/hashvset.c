@@ -59,8 +59,8 @@ int hashvset_put(void* key, hashvset_t table) {
 		}
 	}
 
-	hashvset_new_length(1, table);
-	hashvset_put(key, table);
+	// hashvset_new_length(1, table);
+	// hashvset_put(key, table);
     return 0;
 }
 

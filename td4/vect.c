@@ -39,13 +39,14 @@ vect_t vect_delete(vect_t table){
     for (int i = 0; i < table->actual_size; i++) {
         table->delete_data(table->data[i]);
     }
+    free(table->data);
     free(table);
     return NULL;
 }
 
 int vect_find(void* param, vect_t l){
     for(int i=0;i<l->actual_size; i++){
-        if(l->equal_data((l->data[i]), param))
+        if(l->equal_data((l->data[i]), param) == 0)
             return i;
     }
     return -1;
@@ -59,7 +60,17 @@ vect_t vect_remove_at(int i, vect_t table){
 
     if (table->actual_size != 0 && table->actual_size <= table->max_size / 3) {
         table->max_size /= 2;
-        table->data=realloc(table->data, table->max_size*sizeof(double));
+        table->data=realloc(table->data, table->max_size*sizeof(*(table->data)));
     }
     return table;
+}
+
+void vect_printf(vect_t table) {
+    vect_fprintf(table,stdout);
+}
+
+void vect_fprintf(vect_t table,FILE* fp) {
+    for (int i = 0; i < table->actual_size; i++) {
+        table->fprint_data(table->data[i], fp);
+    }
 }

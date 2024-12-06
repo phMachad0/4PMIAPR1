@@ -24,6 +24,7 @@ typedef struct _vect_t {
 vect_t vect_new(unsigned int n,void (*print_data)(void*,FILE*), void* (*delete_data)(void*),int (*equal_data)(void*,void*));
 vect_t vect_append(void* e, vect_t table);
 void vect_printf(vect_t table);
+void vect_fprintf(vect_t table,FILE* fp);
 vect_t vect_delete(vect_t table);
 int vect_find(void* param, vect_t l);
 int vect_lookup(void* param, vect_t l, int (*)(void*,void*));
