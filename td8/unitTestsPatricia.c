@@ -4,7 +4,7 @@
 
 int main() {
     // Test patricia_new()
-    radix_t tree = patricia_new("");
+    patricia_tree_t tree = patricia_new("");
     if (tree != NULL) {
         printf("trie_new() test passed.\n");
     } else {
@@ -35,6 +35,7 @@ int main() {
     } else {
         printf("trie_insert() and trie_lookup() tests failed.\n");
     }
+    
     char buffer[100];
     // Test patricia_delete()
     patricia_delete(tree);

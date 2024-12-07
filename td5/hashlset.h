@@ -33,3 +33,5 @@ int hashlset_find_key(void* key, hashlset_t table);
 int hashlset_remove_key(void* key, hashlset_t table);
 // Affichage de l'ensemble
 void hashlset_fprintf(hashlset_t table, FILE*fp);
+
+double hashlset_memory_usage(hashlset_t hash);

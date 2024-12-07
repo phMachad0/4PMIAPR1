@@ -16,3 +16,5 @@ void mergesort(vect_t tab);
 
 /* Tri par tas du tableau `tab`*/
 void heapsort(vect_t tab);
+
+int binary_search(vect_t tab, void* element);

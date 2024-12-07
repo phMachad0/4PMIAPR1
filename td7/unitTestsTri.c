@@ -38,7 +38,7 @@ int int_equal(void* pv1, void* pv2) {
 		return 1;
 }
 
-int testInt() {
+int testInt(int triAlgo) {
 	int n = 10;
 
 	vect_t tab = vect_new(n, int_fprintf,int_delete,int_equal);
@@ -52,9 +52,13 @@ int testInt() {
 	vect_printf(tab);
 	printf("\n");
 
-	// mergesort(tab);
-	// quicksort(tab);
-	heapsort(tab);
+	if (triAlgo == 1) {
+		quicksort(tab);
+	} else if (triAlgo == 2) {
+		heapsort(tab);
+	} else {
+		mergesort(tab);
+	}
 	vect_printf(tab);
 
 	printf("\n");
@@ -62,7 +66,7 @@ int testInt() {
 	return 0;
 }
 
-int testString() {
+int testString(int triAlgo) {
 	// char *donnees_test[] = {"Longtemps", "je", "me", "suis", "couche", "de", "bonne", "heure", "Parfois", "a",
 	// 	                "peine", "ma", "bougie", "eteinte"};
     char **donnees_test = randomchartabgeneration(14);
@@ -78,9 +82,13 @@ int testString() {
 	vect_printf(tab);
 	printf("\n");
 
-	// mergesort(tab);
-	// quicksort(tab);
-	heapsort(tab);
+	if (triAlgo == 1) {
+		quicksort(tab);
+	} else if (triAlgo == 2) {
+		heapsort(tab);
+	} else {
+		mergesort(tab);
+	}
 	vect_printf(tab);
 	printf("\n");
 	free(donnees_test);
@@ -89,7 +97,17 @@ int testString() {
 }
 
 int main() {
-	testInt();
-	testString();
+	for (int i = 1; i <= 3; i++) {
+		printf("Tri par ");
+		if (i == 1) {
+			printf("quick sort\n");
+		} else if (i == 2) {
+			printf("heap sort\n");
+		} else {
+			printf("merge sort\n");
+		}
+		testInt(i);
+		testString(i);
+	}
 	return 0;
 }

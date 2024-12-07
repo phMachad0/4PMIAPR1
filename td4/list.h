@@ -78,4 +78,6 @@ list_t list_remove(void* param, list_t l);
 void list_simple_visit(list_t l, void (*)(void*,void*), void* param);
 void list_visit(list_t l, int (*exec_on_value)(void*,void*), int (*exec_on_link)(list_t,void*),void* param);
 
+double list_memory_usage(list_t l);
+
 #endif

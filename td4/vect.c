@@ -74,3 +74,12 @@ void vect_fprintf(vect_t table,FILE* fp) {
         table->fprint_data(table->data[i], fp);
     }
 }
+
+double vect_memory_usage(vect_t table) {
+    double size = 0;
+    for (size_t i = 0; i < table->actual_size; i++)
+    {
+        size += strlen(table->data[i]);
+    }
+    return size / 1024 / 1024;
+}

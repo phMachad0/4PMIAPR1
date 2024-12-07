@@ -1,99 +1,103 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 #include "patricia.h"
 
-radix_t patricia_new(char *word) {
-    radix_t tree;
+patricia_tree_t patricia_new(char *word) {
+	patricia_tree_t tree;
 
-    if ((tree=malloc(sizeof(*tree))) == NULL)
-        return NULL;
+	if ((tree=malloc(sizeof(*tree))) == NULL)
+		return NULL;
 
-    tree->value = strdup(word); 
-    tree->sons = NULL;
-    tree->brothers = NULL;
+	tree->value = strdup(word);
+	tree->sons = NULL;
+	tree->brothers = NULL;
+
+	return tree;
+}
+
+patricia_tree_t patricia_insert(char *word, patricia_tree_t tree) {
+
+	if (tree == NULL) {
+		tree = patricia_new(word);
+	}
     
-    return tree;
+	if (*word == '\0' || tree->value[0] == word[0]) {
+		if (*word == '\0') {
+			if (tree->sons == NULL) {
+				tree->sons = patricia_new("\0");
+			}
+		} else {
+			int sameChars=0;
+			for (int i=0; word[i] != '\0' && tree->value[i] != '\0'; i++) {
+				if (word[i] == tree->value[i]) sameChars++;
+			}
+
+			tree->sons = patricia_insert(word + sameChars, tree->sons);
+		}
+	} else {
+		tree->brothers = patricia_insert(word, tree->brothers);
+	}
+
+	return tree;
 }
 
-radix_t patricia_insert(char *word, radix_t t) {
-    if (t == NULL) {
-        t = patricia_new(word);
-        return t;
-    }
-
-    while (t != NULL) {
-        int i = 0;
-        while (i < strlen(t->value) &&
-               i < strlen(word) &&
-               t->value[i] == word[i]) {
-            i++;
+int patricia_lookup(char *word, patricia_tree_t tree) {
+    while (tree != NULL) {
+        *word = tolower(*word);
+        if (*word == '\0' && tree->value[0] == '\0') {
+            return 1;
         }
 
-        if (i == 0) {
-            if (t->brothers == NULL) {
-                t->brothers = patricia_new(word);
+        if (tree->value[0] == *word || (tree->value[0] == '\0' && *word == '\0')) {
+            int sameChars=0;
+            for (int i=0; word[i] != '\0' && tree->value[i] != '\0'; i++) {
+                if (word[i] == tree->value[i]) sameChars++;
             }
-            t = t->brothers;
-        } else if (i < strlen(t->value)) {
-            radix_t new_son = patricia_new(t->value + i);
-            new_son->sons = t->sons; 
-            t->value[i] = '\0';
-            t->sons = new_son;
 
-            if (i < strlen(word)) {
-                new_son->brothers = patricia_new(word + i);
-            }
-            return t;
+            word += sameChars;
+            tree = tree->sons;
         } else {
-            word += i;
-            if (*word == '\0') {
-                return t;
-            }
-            if (t->sons == NULL) {
-                t->sons = patricia_new(word);
-            }
-            t = t->sons;
+            tree = tree->brothers;
         }
     }
-    return t;
+    return 0;
 }
 
-int patricia_lookup(char *word, radix_t t) {
-    radix_t current = t;
-    while (current != NULL) {
-        int len = strlen(current->value);
-        if (strncmp(current->value, word, len) == 0) {
-            word += len;
-            if (*word == '\0') {
-                return 1; 
-            }
-            current = current->sons; 
-        } else {
-            current = current->brothers; 
-        }
-    }
-    return 0; 
+void patricia_delete(patricia_tree_t tree)
+{
+	if (tree!=NULL) {
+		patricia_delete(tree->brothers);
+		patricia_delete(tree->sons);
+		if (tree->value != NULL) {
+			free(tree->value);
+		}
+		free(tree);
+	}
 }
 
-void patricia_delete(radix_t t) {
-    if (t == NULL) {
-        return;
-    }
+size_t patricia_memory_size (patricia_tree_t tree) {
+	if (tree == NULL) {
+		return 0;
+	}
 
-    if (t->sons != NULL) {
-        printf("Deleting %s\n", t->value);
-        patricia_delete(t->sons);
-        // free(t->value);
-    }
+	size_t size = (double) sizeof(*tree);
+	if (tree->value != NULL) {
+		size += strlen(tree->value) + 1;
+	}
 
-    if (t->brothers != NULL) {
-        printf("Deleting %s\n", t->value);
-        patricia_delete(t->brothers);
-        // free(t->value);
-    }
+	if (tree->sons != NULL) {
+		size += patricia_memory_size(tree->sons);
+	}
 
-    // patricia_delete(t->sons);
-    // patricia_delete(t->brothers);
+	if (tree->brothers != NULL) {
+		size += patricia_memory_size(tree->brothers);
+	}
 
-    printf("Deleting %s\n", t->value);
-    free(t->value);
-    free(t);
+	return size;
+}
+
+double patricia_memory_usage(patricia_tree_t tree) {
+	return (double) patricia_memory_size(tree) / 1024.0 / 1024.0;
 }

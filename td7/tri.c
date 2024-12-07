@@ -97,3 +97,24 @@ void heapsort(vect_t tab) {
 
     tas = heap_delete(tas);
 }
+
+int binary_search(vect_t tab, void* element) {
+    int left = 0;
+    int right = tab->actual_size - 1;
+
+    while (left <= right) {
+        int middle = left + (right - left) / 2;
+
+        if (tab->equal_data(tab->data[middle], element) == 0) {
+            return middle;
+        }
+
+        if (tab->equal_data(tab->data[middle], element) < 0) {
+            left = middle + 1;
+        } else {
+            right = middle - 1;
+        }
+    }
+
+    return -1;
+}

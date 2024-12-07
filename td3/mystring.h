@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef char* mystring;
+typedef const char* mystring;
 
 // Affichage d'une chaine de type mystring
 void mystring_fprintf(void* val,FILE* fp);
@@ -21,5 +21,7 @@ void mystring_random(mystring* p);
 void* mystring_new(mystring val);
 
 void* mystring_delete(void* data);
+
+unsigned int mystring_hashage(void* e);
 
 #endif

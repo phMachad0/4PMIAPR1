@@ -1,17 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 typedef
         struct node_radix {
 	char* value;
 	struct node_radix *sons, * brothers;
-}  *radix_t;
+}  *patricia_tree_t;
 
-radix_t patricia_new();
+patricia_tree_t patricia_new(char *word);
 
-radix_t patricia_insert(char *word, radix_t t);
+patricia_tree_t patricia_insert(char *word, patricia_tree_t tree);
+int patricia_lookup(char *word, patricia_tree_t tree);
+void patricia_delete(patricia_tree_t tree);
 
-int patricia_lookup(char *word, radix_t t);
-
-void patricia_delete(radix_t t);
+double patricia_memory_usage(patricia_tree_t tree);

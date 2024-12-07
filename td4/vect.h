@@ -29,4 +29,5 @@ vect_t vect_delete(vect_t table);
 int vect_find(void* param, vect_t l);
 int vect_lookup(void* param, vect_t l, int (*)(void*,void*));
 vect_t vect_remove_at(int i, vect_t table);
+double vect_memory_usage(vect_t table);
 #endif
