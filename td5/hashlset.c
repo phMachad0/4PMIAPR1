@@ -43,6 +43,7 @@ int hashlset_put(void* key, hashlset_t table) {
 	int slot = h % table->size;
 
 	if (list_lookup(key, table->data[slot], table->compare_key) != NULL) {
+		table->delete_key(key);
 		return 1;
 	}
 

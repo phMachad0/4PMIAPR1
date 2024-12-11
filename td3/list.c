@@ -199,6 +199,18 @@ void list_simple_visit(list_t l, void (*exec_on_value)(void*,void*), void* param
         current_link = current_link->next;
     }
 }
+
+double list_memory_usage(list_t l) {
+    double size = 0;
+    link_t current_link;
+    current_link = l->data;
+
+    for (int i=0; i<l->size; i++) {
+        size += sizeof(current_link->data);
+        current_link = current_link->next;
+    }
+    return size;
+}
 // void list_visit(list_t l, int (*exec_on_value)(void*,void*), int (*exec_on_link)(list_t,void*),void* param) {
 
 // }

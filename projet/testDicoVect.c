@@ -4,6 +4,7 @@
 #include "utils.h"
 
 int main(int ac, char**av) {
+	setlocale(LC_ALL, "fr_FR.UTF-8");
 	clock_t debut,fin,debut1,fin1;
 
 	if (ac!=2 && ac!=3) { printf("Usage : %s ficher_dico fichier_a_verifier\n",av[0]); exit(EXIT_FAILURE);}
